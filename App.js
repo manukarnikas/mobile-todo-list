@@ -9,7 +9,7 @@ export default function App() {
 
   function handler(text){
     setTask({
-      id: taskList.length,
+      id: Math.floor(Math.random() * 900) + 100,
       title: text,
       completed: false
     });

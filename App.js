@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, TextInput, Text  } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView  } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function App() {
@@ -40,7 +40,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Manu's Todo List</Text>
+        <Text style={styles.title}>Todo List</Text>
       </View>
       <View style={styles.body}>
         <View style={styles.inputContainer}>
@@ -58,6 +58,7 @@ export default function App() {
           />
         </View>
         <View style={styles.listContainer}>
+          <ScrollView>
           {taskList.map((t,index)=>{
             return (
               <View key={t.id} style={styles.taskContainer}>
@@ -69,6 +70,7 @@ export default function App() {
               </View>
             );
           })}
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#008080',
-    flexGrow: 0.5,
+    height: 100,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     width: 100
   },
   body:{
-    flexGrow: 4,
+    flexGrow: 1,
     padding: 20
   },
   inputContainer: {
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     color: 'red'
   },
   checkIcon: {
-    color: 'green'
+    color: 'green',
+    marginRight: 10
   }
 });

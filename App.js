@@ -1,29 +1,30 @@
 import { useState } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView, Pressable  } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { StyleSheet, View, Text } from 'react-native';
+import ListComponent from './components/ListComponent';
+import InputComponent from './components/InputComponent';
 
 export default function App() {
 
   const [taskList, setTaskList] = useState([]);
   const [task, setTask] = useState({});
 
-  function handler(text){
+  function inputHandler(text) {
     setTask({
       id: Math.floor(Math.random() * 900) + 100,
       title: text,
       completed: false
     });
   }
-  
-  function addToTaskListHandler(){
-    setTaskList([...taskList,task]);
+
+  function addToTaskListHandler() {
+    setTaskList([...taskList, task]);
     setTask({});
   }
-  
-  function completeTaskHandler(id){
-    const newTaskList = taskList.map(t=>{
-      if(t.id === id){
-        const temp = {...t};
+
+  function completeTaskHandler(id) {
+    const newTaskList = taskList.map(t => {
+      if (t.id === id) {
+        const temp = { ...t };
         temp.completed = true;
         return temp;
       }
@@ -32,8 +33,8 @@ export default function App() {
     setTaskList(newTaskList);
   }
 
-  function deleteTaskHandler(id){
-    const newTaskList = taskList.filter(t=>t.id !== id);
+  function deleteTaskHandler(id) {
+    const newTaskList = taskList.filter(t => t.id !== id);
     setTaskList(newTaskList);
   }
 
@@ -44,32 +45,10 @@ export default function App() {
       </View>
       <View style={styles.body}>
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Type here"
-            onChangeText={handler}
-            value={task.title ? task.title : ""}
-          />
-          <Icon 
-            style={task.title?.length<=0 ? styles.disabledAddIcon :styles.addIcon} 
-            name="pluscircle" 
-            size={30} 
-            onPress={task?.title?.length>0 ? addToTaskListHandler: null}
-          />
+          <InputComponent task={task} inputHandler={inputHandler} addToTaskListHandler={addToTaskListHandler} />
         </View>
         <View style={styles.listContainer}>
-          <ScrollView>
-          {taskList.map((t,index)=>{
-            return (
-              <Pressable onPress={()=>completeTaskHandler(t.id)}>
-                <View key={t.id} style={styles.taskContainer}>
-                  <Text style={t.completed ? styles.taskCompletedStyle: styles.taskStyle}>{index+1}. {t.title}</Text>
-                  <Icon name="delete" size={20} style={styles.deleteIcon} onPress={()=>deleteTaskHandler(t.id)}/>
-                </View>
-              </Pressable>
-            );
-          })}
-          </ScrollView>
+          <ListComponent taskList={taskList} completeTaskHandler={completeTaskHandler} deleteTaskHandler={deleteTaskHandler} />
         </View>
       </View>
     </View>
@@ -94,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     width: 100
   },
-  body:{
+  body: {
     flexGrow: 1,
     padding: 20
   },
@@ -104,50 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20
   },
-  input: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    flexGrow: 4
-  },
-  addIcon: {
-    flexGrow: 0.25,
-    padding: 0,
-    textAlign: 'center',
-    marginTop: 5,
-    marginLeft: 10
-  },
-  disabledAddIcon: {
-    flexGrow: 0.25,
-    padding: 0,
-    textAlign: 'center',
-    marginTop: 5,
-    marginLeft: 10,
-    color: 'grey'
-  },
   listContainer: {
     padding: 20
-  },
-  taskContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20
-  },
-  taskStyle: {
-    fontSize: 16,
-    flexGrow: 0,
-    width: 200,
-    overflow: 'hidden'
-  },
-  taskCompletedStyle: {
-    fontSize: 16,
-    textDecorationLine: 'line-through',
-    color: 'grey',
-    flexGrow: 0,
-    width: 200,
-    overflow: 'hidden'
-  },
-  deleteIcon: {
-    color: 'red'
   }
 });

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, TextInput, Text, ScrollView  } from 'react-native';
+import { StyleSheet, View, TextInput, Text, ScrollView, Pressable  } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 export default function App() {
@@ -61,13 +61,12 @@ export default function App() {
           <ScrollView>
           {taskList.map((t,index)=>{
             return (
-              <View key={t.id} style={styles.taskContainer}>
-                <Text style={t.completed ? styles.taskCompletedStyle: styles.taskStyle}>{index+1}. {t.title}</Text>
-                <View style={styles.iconContainer}>
+              <Pressable onPress={()=>completeTaskHandler(t.id)}>
+                <View key={t.id} style={styles.taskContainer}>
+                  <Text style={t.completed ? styles.taskCompletedStyle: styles.taskStyle}>{index+1}. {t.title}</Text>
                   <Icon name="delete" size={20} style={styles.deleteIcon} onPress={()=>deleteTaskHandler(t.id)}/>
-                  <Icon name="check" size={20} style={styles.checkIcon} onPress={()=>completeTaskHandler(t.id)}/>
                 </View>
-              </View>
+              </Pressable>
             );
           })}
           </ScrollView>
@@ -148,17 +147,7 @@ const styles = StyleSheet.create({
     width: 200,
     overflow: 'hidden'
   },
-  iconContainer:{
-    display: 'flex',
-    flexDirection: 'row',
-    flexGrow: 1,
-    justifyContent: 'space-between'
-  },
   deleteIcon: {
     color: 'red'
-  },
-  checkIcon: {
-    color: 'green',
-    marginRight: 10
   }
 });
